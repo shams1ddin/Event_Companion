@@ -1,4 +1,3 @@
-# keyboards.py
 from telebot import types
 from texts import get_text
 
@@ -75,7 +74,7 @@ def meeting_details_keyboard(meeting_id, lang='en', has_agenda=False, has_people
         types.InlineKeyboardButton(get_text(lang, 'wifi') + (' ✅' if has_wifi else ''), callback_data=f"wifi_{meeting_id}")
     )
     kb.row(
-        types.InlineKeyboardButton(get_text(lang, 'qna'), callback_data=f"qna_{meeting_id}"),  # Q&A без индикации, т.к. вопросы динамичны
+        types.InlineKeyboardButton(get_text(lang, 'qna'), callback_data=f"qna_{meeting_id}"),
         types.InlineKeyboardButton(get_text(lang, 'live_map') + (' ✅' if has_map else ''), callback_data=f"map_{meeting_id}")
     )
     kb.add(types.InlineKeyboardButton(get_text(lang, 'pdf_info'), callback_data=f"pdf_{meeting_id}"))
@@ -110,7 +109,6 @@ def user_agenda_item_keyboard(agenda_id, meeting_id, is_subscribed, lang='en'):
     return kb
 
 
-# ==================== АДМИНКА ====================
 
 def admin_keyboard(lang='en'):
     kb = types.InlineKeyboardMarkup(row_width=1)
@@ -146,13 +144,11 @@ def admin_notifications_keyboard(meetings, lang='en'):
 
 def admin_meeting_manage_keyboard(meeting_id, lang='en'):
     kb = types.InlineKeyboardMarkup(row_width=2)
-    # Edit basic fields
     kb.add(
         types.InlineKeyboardButton(get_text(lang, 'edit_meeting_name'), callback_data=f"admin_edit_name_{meeting_id}"),
         types.InlineKeyboardButton(get_text(lang, 'edit_meeting_date'), callback_data=f"admin_edit_date_{meeting_id}"),
         types.InlineKeyboardButton(get_text(lang, 'edit_meeting_location'), callback_data=f"admin_edit_location_{meeting_id}")
     )
-    # Existing management actions (two per row)
     kb.row(
         types.InlineKeyboardButton(get_text(lang, 'admin_wifi'), callback_data=f"admin_wifi_{meeting_id}"),
         types.InlineKeyboardButton(get_text(lang, 'admin_photos'), callback_data=f"admin_photos_{meeting_id}")

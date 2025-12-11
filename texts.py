@@ -1,21 +1,16 @@
-# texts.py
-# Все тексты бота на трёх языках
 
 TEXTS = {
     'en': {
-        # Начальные сообщения
         'choose_language': '🌍 Please choose your language:',
         'welcome': '👋 Welcome to Event Companion Bot!\n\n'
                   'Here you can find information about events and meetings.',
         
-        # Главное меню
         'main_menu': '📋 Main Menu',
         'select_meeting': '📅 Select Meeting',
         'my_profile': '👤 My Profile',
         'edit_profile': '✏️ Edit Profile',
         'change_language': '🌍 Change Language',
         
-        # Детали встречи
         'meeting_details': '📅 Meeting: {name}\n'
                           '📍 Location: {location}\n'
                           '📆 Date: {date}',
@@ -41,7 +36,6 @@ TEXTS = {
         'satisfaction_prompt': 'Are you satisfied with the meeting?',
         'thank_you': '🙏 Thank you for participating!',
         
-        # Профиль
         'fill_profile': '✏️ Fill your data:',
         'enter_name': 'Enter your name:',
         'enter_phone': 'Enter your phone number:',
@@ -52,7 +46,6 @@ TEXTS = {
                        'Phone: {phone}\n'
                        'Company: {company}',
         
-        # Q&A
         'ask_question': '❓ Ask your question (anonymous):',
         'question_sent': '✅ Your question has been sent!',
         'feedback_prompt': 'Do you want to share detailed feedback?',
@@ -61,7 +54,6 @@ TEXTS = {
         'enter_feedback': 'Please enter your feedback:',
         'feedback_sent': '✅ Thank you for your feedback!',
         
-        # WiFi
         'wifi_info': '📶 WiFi Password:\n\n'
                     'Network: {network}\n'
                     'Password: {password}',
@@ -69,7 +61,6 @@ TEXTS = {
         'edit_wifi_name': '✏️ Edit WiFi name',
         'edit_wifi_password': '✏️ Edit WiFi password',
         
-        # Админка
         'admin_login': '🔐 Enter admin password:',
         'wrong_password': '❌ Wrong password!',
         'admin_welcome': '👑 Admin Panel',
@@ -94,14 +85,12 @@ TEXTS = {
         'finished_meetings': '✅ Finished meetings',
         'choose_action': '⚙️ Choose action:',
         
-        # Создание встречи
         'enter_meeting_name': 'Enter meeting name:',
         'enter_location': 'Enter location:',
         'enter_date': 'Enter date (DD.MM.YYYY):',
         'meeting_created': '✅ Meeting created successfully!',
         'no_questions': '❓ No questions yet.',
         
-        # Ошибки
         'no_meetings': '❌ No meetings available yet.',
         'error': '❌ An error occurred. Please try again.',
         'edit': '✏️ Edit',
@@ -173,22 +162,19 @@ TEXTS = {
         'admin_pdf': '📄 PDF',
         'admin_finish_meeting': '✅ Finish meeting',
         'admin_delete_meeting': '🗑 Delete meeting'
-        },
+    },
     
     'ru': {
-        # Начальные сообщения
         'choose_language': '🌍 Пожалуйста, выберите язык:',
         'welcome': '👋 Добро пожаловать в Event Companion Bot!\n\n'
                   'Здесь вы можете найти информацию о мероприятиях и встречах.',
         
-        # Главное меню
         'main_menu': '📋 Главное меню',
         'select_meeting': '📅 Выбрать встречу',
         'my_profile': '👤 Мой профиль',
         'edit_profile': '✏️ Редактировать профиль',
         'change_language': '🌍 Сменить язык',
         
-        # Детали встречи
         'meeting_details': '📅 Встреча: {name}\n'
                           '📍 Место: {location}\n'
                           '📆 Дата: {date}',
@@ -214,7 +200,6 @@ TEXTS = {
         'satisfaction_prompt': 'Вы довольны встречей?',
         'thank_you': '🙏 Спасибо за участие!',
         
-        # Профиль
         'fill_profile': '✏️ Заполните свои данные:',
         'enter_name': 'Введите ваше имя:',
         'enter_phone': 'Введите ваш номер телефона:',
@@ -225,7 +210,6 @@ TEXTS = {
                        'Телефон: {phone}\n'
                        'Компания: {company}',
         
-        # Q&A
         'ask_question': '❓ Задайте ваш вопрос (анонимно):',
         'question_sent': '✅ Ваш вопрос отправлен!',
         'feedback_prompt': 'Хотите оставить подробный отзыв?',
@@ -234,7 +218,6 @@ TEXTS = {
         'enter_feedback': 'Пожалуйста, введите ваш отзыв:',
         'feedback_sent': '✅ Спасибо за ваш отзыв!',
         
-        # WiFi
         'wifi_info': '📶 Пароль WiFi:\n\n'
                     'Сеть: {network}\n'
                     'Пароль: {password}',
@@ -242,7 +225,6 @@ TEXTS = {
         'edit_wifi_name': '✏️ Редактировать имя WiFi',
         'edit_wifi_password': '✏️ Редактировать пароль WiFi',
         
-        # Админка
         'admin_login': '🔐 Введите пароль администратора:',
         'wrong_password': '❌ Неверный пароль!',
         'admin_welcome': '👑 Панель администратора',
@@ -267,14 +249,12 @@ TEXTS = {
         'finished_meetings': '✅ Завершённые встречи',
         'choose_action': '⚙️ Выберите действие:',
         
-        # Создание встречи
         'enter_meeting_name': 'Введите название встречи:',
         'enter_location': 'Введите место проведения:',
         'enter_date': 'Введите дату (ДД.ММ.ГГГГ):',
         'meeting_created': '✅ Встреча успешно создана!',
         'no_questions': '❓ Пока нет вопросов.',
         
-        # Ошибки
         'no_meetings': '❌ Встречи пока не доступны.',
         'error': '❌ Произошла ошибка. Попробуйте снова.',
         'edit': '✏️ Редактировать',
@@ -346,22 +326,19 @@ TEXTS = {
         'admin_pdf': '📄 PDF',
         'admin_finish_meeting': '✅ Завершить встречу',
         'admin_delete_meeting': '🗑 Удалить встречу'
-        },
+    },
     
     'uz': {
-        # Начальные сообщения
         'choose_language': '🌍 Iltimos, tilni tanlang:',
         'welcome': '👋 Event Companion Botiga xush kelibsiz!\n\n'
                   'Bu yerda tadbirlar va uchrashuvlar haqida ma\'lumot olishingiz mumkin.',
         
-        # Главное меню
         'main_menu': '📋 Asosiy menyu',
         'select_meeting': '📅 Uchrashuvni tanlash',
         'my_profile': '👤 Mening profilim',
         'edit_profile': '✏️ Profilni tahrirlash',
         'change_language': '🌍 Tilni o\'zgartirish',
         
-        # Детали встречи
         'meeting_details': '📅 Uchrashuv: {name}\n'
                           '📍 Manzil: {location}\n'
                           '📆 Sana: {date}',
@@ -387,7 +364,6 @@ TEXTS = {
         'satisfaction_prompt': 'Uchrashuvdan mamnunmisiz?',
         'thank_you': '🙏 Ishtirok etganingiz uchun rahmat!',
         
-        # Профиль
         'fill_profile': '✏️ Ma\'lumotlaringizni kiriting:',
         'enter_name': 'Ismingizni kiriting:',
         'enter_phone': 'Telefon raqamingizni kiriting:',
@@ -398,7 +374,6 @@ TEXTS = {
                        'Telefon: {phone}\n'
                        'Kompaniya: {company}',
         
-        # Q&A
         'ask_question': '❓ Savolingizni yozing (anonim):',
         'question_sent': '✅ Savolingiz yuborildi!',
         'feedback_prompt': 'Batafsil fikr-mulohaza qoldirmoqchimisiz?',
@@ -407,7 +382,6 @@ TEXTS = {
         'enter_feedback': 'Iltimos, fikr-mulohazangizni kiriting:',
         'feedback_sent': '✅ Fikr-mulohazangiz uchun rahmat!',
         
-        # WiFi
         'wifi_info': '📶 WiFi paroli:\n\n'
                     'Tarmoq: {network}\n'
                     'Parol: {password}',
@@ -415,7 +389,6 @@ TEXTS = {
         'edit_wifi_name': '✏️ WiFi nomini tahrirlash',
         'edit_wifi_password': '✏️ WiFi parolini tahrirlash',
         
-        # Админка
         'admin_login': '🔐 Administrator parolini kiriting:',
         'wrong_password': '❌ Noto\'g\'ri parol!',
         'admin_welcome': '👑 Administrator paneli',
@@ -440,14 +413,12 @@ TEXTS = {
         'finished_meetings': '✅ Yakunlangan uchrashuvlar',
         'choose_action': '⚙️ Amalni tanlang:',
         
-        # Создание встречи
         'enter_meeting_name': 'Uchrashuv nomini kiriting:',
         'enter_location': 'Manzilni kiriting:',
         'enter_date': 'Sanani kiriting (KK.OO.YYYY):',
         'meeting_created': '✅ Uchrashuv muvaffaqiyatli yaratildi!',
         'no_questions': '❓ Hozircha savollar yoʻq.',
         
-        # Ошибки
         'no_meetings': '❌ Hozircha uchrashuvlar mavjud emas.',
         'error': '❌ Xatolik yuz berdi. Qaytadan urinib ko\'ring.',
         'edit': '✏️ Tahrirlash',
@@ -519,10 +490,9 @@ TEXTS = {
         'admin_pdf': '📄 PDF',
         'admin_finish_meeting': '✅ Uchrashuvni yakunlash',
         'admin_delete_meeting': '🗑 Uchrashuvni o‘chirish'
-        }
+    }
 }
 
-# Языки
 LANGUAGES = {
     'en': '🇬🇧 English',
     'ru': '🇷🇺 Русский',

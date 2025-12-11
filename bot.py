@@ -1,20 +1,13 @@
-# bot.py
-# Основной файл бота
-
 import telebot
- 
 from config import BOT_TOKEN, ADMIN_PASSWORD
 from database import *
 from texts import get_text
 from keyboards import *
 
-# Создаём бота
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# Храним временные данные пользователей
 user_states = {}
 
-# === КОМАНДЫ ===
 
 @bot.message_handler(commands=['start'])
 def start_command(message):
@@ -23,7 +16,6 @@ def start_command(message):
     user = get_user(user_id)
     
     if not user:
-        # Новый пользователь - выбираем язык
         create_user(user_id)
         bot.send_message(
             message.chat.id,
@@ -31,14 +23,12 @@ def start_command(message):
             reply_markup=language_keyboard()
         )
     else:
-        # Пользователь уже есть - показываем главное меню
-        lang = user[1]  # language column
+        lang = user[1]  
         bot.send_message(
             message.chat.id,
             get_text(lang, 'welcome'),
             reply_markup=main_menu_keyboard(lang)
         )
-
 # @bot.message_handler(content_types=['photo'])
 # def get_id_of_photo(message):
 #     """Получение ID фотографии"""
@@ -54,14 +44,12 @@ def admin_command(message):
     lang = user[1] if user else 'en'
     
     if is_admin(user_id):
-        # Уже админ
         bot.send_message(
             message.chat.id,
             get_text(lang, 'admin_welcome'),
             reply_markup=admin_keyboard(lang)
         )
     else:
-        # Просим ввести пароль
         msg = bot.send_message(message.chat.id, get_text(lang, 'admin_login'))
         bot.register_next_step_handler(msg, check_admin_password)
 
@@ -81,7 +69,6 @@ def check_admin_password(message):
     else:
         bot.send_message(message.chat.id, get_text(lang, 'wrong_password'))
 
-# === ОБРАБОТКА КНОПОК (Callback) ===
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('lang_'))
 def language_callback(call):
@@ -146,9 +133,9 @@ def meeting_callback(call):
         text = get_text(
             lang, 
             'meeting_details',
-            name=meeting[1],  # name
-            location=meeting[2] or 'N/A',  # location
-            date=meeting[3] or 'N/A'  # date
+            name=meeting[1],
+            location=meeting[2] or 'N/A',
+            date=meeting[3] or 'N/A'
         )
         bot.edit_message_text(
             text,
@@ -219,7 +206,6 @@ def agenda_alert_toggle_callback(call):
     else:
         add_agenda_alert(agenda_id, user_id)
         bot.answer_callback_query(call.id, get_text(lang, 'alert_on'))
-    # Refresh view
     items = get_agenda(meeting_id)
     item = next((i for i in items if i[0] == agenda_id), None)
     if item:
@@ -248,7 +234,7 @@ def wifi_callback(call):
     meeting_id = int(call.data.split('_')[1])
     meeting = get_meeting(meeting_id)
     
-    if meeting and meeting[4]:  # wifi_network
+    if meeting and meeting[4]:
         text = get_text(
             lang,
             'wifi_info',
@@ -444,7 +430,6 @@ def map_callback(call):
     meeting = get_meeting(meeting_id)
     
     if meeting and meeting[6] and meeting[7]:  # latitude and longitude
-        # Отправляем геолокацию
         bot.send_location(call.message.chat.id, meeting[6], meeting[7])
         bot.send_message(
             call.message.chat.id,
@@ -461,7 +446,6 @@ def map_callback(call):
             reply_markup=back_to_meeting_keyboard(meeting_id, lang)
         )
 
-# === АДМИН CALLBACKS ===
 
 @bot.callback_query_handler(func=lambda call: call.data == 'admin_add_meeting')
 def admin_add_meeting_callback(call):
@@ -709,7 +693,6 @@ def finish_yes_callback(call):
         reply_markup=admin_meetings_keyboard(meetings, lang)
     )
 
-# удалены обработчики дедлайна
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('admin_wifi_'))
 def admin_wifi_view_callback(call):
@@ -1314,7 +1297,6 @@ def fill_profile_button_callback(call):
     user_states[user_id] = {'state': 'filling_profile', 'step': 'name'}
     bot.send_message(call.message.chat.id, get_text(lang, 'enter_name'), reply_markup=telebot.types.ReplyKeyboardRemove())
 
-# === ОБРАБОТКА ТЕКСТОВЫХ СООБЩЕНИЙ ===
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
@@ -1324,11 +1306,9 @@ def handle_text(message):
     lang = user[1] if user else 'en'
     text = message.text
     
-    # Проверяем состояние пользователя
     if user_id in user_states:
         state = user_states[user_id]
         
-        # Задаём вопрос
         if state.get('state') == 'asking_question':
             meeting_id = state.get('meeting_id')
             add_question(meeting_id, user_id, text)
@@ -1336,7 +1316,6 @@ def handle_text(message):
             bot.send_message(message.chat.id, get_text(lang, 'question_sent'))
             return
         
-        # Создание встречи
         if state.get('state') == 'creating_meeting':
             step = state.get('step')
             
@@ -1359,7 +1338,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, get_text(lang, 'meeting_created'), reply_markup=main_menu_keyboard(lang))
                 return
         
-        # Добавление WiFi
         if state.get('state') == 'adding_wifi':
             step = state.get('step')
             meeting_id = state.get('meeting_id')
@@ -1376,7 +1354,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, get_text(lang, 'wifi_added'))
                 return
         
-        # Добавление фотографий: запрещаем не-фото контент
         if state.get('state') == 'adding_photos':
             bot.send_message(message.chat.id, f"{get_text(lang, 'invalid_photo_format')}\n{get_text(lang, 'send_photos')}")
             return
@@ -1410,7 +1387,6 @@ def handle_text(message):
             bot.send_message(message.chat.id, get_text(lang, 'admin_wifi'), reply_markup=admin_wifi_view_keyboard(meeting_id, lang, True))
             return
 
-        # Редактирование пункта повестки
         if state.get('state') == 'editing_agenda_item':
             agenda_id = state.get('agenda_id')
             meeting_id = state.get('meeting_id')
@@ -1477,7 +1453,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, text_block, reply_markup=admin_agenda_items_list_keyboard(meeting_id, items, lang))
                 return
         
-        # Отправка уведомления
         if state.get('state') == 'sending_notification':
             scope = state.get('scope')
             recipients = []
@@ -1505,7 +1480,6 @@ def handle_text(message):
             bot.send_message(message.chat.id, get_text(lang, 'feedback_sent'))
             return
 
-        # Админ: редактирование полей встречи
         if state.get('state') == 'admin_edit_meeting':
             meeting_id = state.get('meeting_id')
             field = state.get('field')
@@ -1521,8 +1495,7 @@ def handle_text(message):
             header = f"⚙️ {meeting[1]}\n\n{get_text(lang, 'choose_action')}"
             bot.send_message(message.chat.id, header, reply_markup=admin_meeting_manage_keyboard(meeting_id, lang))
             return
-        
-        # Заполнение профиля
+
         if state.get('state') == 'filling_profile':
             step = state.get('step')
             
@@ -1544,7 +1517,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, get_text(lang, 'profile_saved'), reply_markup=main_menu_keyboard(lang))
                 return
 
-        # Редактирование профиля (по отдельным полям)
         if state.get('state') == 'editing_profile':
             step = state.get('step')
             current = get_user(user_id)
@@ -1567,7 +1539,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, get_text(lang, 'profile_saved'), reply_markup=main_menu_keyboard(lang))
                 return
     
-    # Обработка кнопок главного меню
     if text == get_text(lang, 'select_meeting'):
         meetings = get_all_meetings()
         if meetings:
@@ -1580,7 +1551,7 @@ def handle_text(message):
             bot.send_message(message.chat.id, get_text(lang, 'no_meetings'))
     
     elif text == get_text(lang, 'my_profile'):
-        if user and user[2]:  # has name
+        if user and user[2]: 
             profile_text = get_text(
                 lang,
                 'your_profile',
@@ -1602,7 +1573,6 @@ def handle_text(message):
             reply_markup=language_keyboard()
         )
 
-# === ОБРАБОТКА ГЕОЛОКАЦИИ И ФОТО ===
 
 @bot.message_handler(content_types=['location'])
 def handle_location(message):
@@ -1614,7 +1584,6 @@ def handle_location(message):
     if user_id in user_states:
         state = user_states[user_id]
         
-        # Добавление геолокации в админке
         if state.get('state') == 'adding_geo':
             meeting_id = state.get('meeting_id')
             update_location_geo(meeting_id, message.location.latitude, message.location.longitude)
@@ -1654,10 +1623,8 @@ def handle_photo(message):
     if user_id in user_states:
         state = user_states[user_id]
         
-        # Добавление фото к встрече
         if state.get('state') == 'adding_photos':
             meeting_id = state.get('meeting_id')
-            # Берём самое большое фото
             photo_id = message.photo[-1].file_id
             add_photo(meeting_id, photo_id)
             del user_states[user_id]
@@ -1692,7 +1659,6 @@ def handle_non_photo_in_photo_mode(message):
             bot.send_message(message.chat.id, f"{get_text(lang, 'invalid_photo_format')}\n{get_text(lang, 'send_photos')}")
             return
 
-# === АДМИН: ДОБАВИТЬ ГЕО и УДАЛИТЬ ВСТРЕЧУ ===
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith('add_geo_'))
 def add_geo_callback(call):
@@ -1726,10 +1692,8 @@ def delete_meeting_callback(call):
             reply_markup=admin_meetings_keyboard([], lang)
         )
 
-# === ЗАПУСК БОТА ===
 
 if __name__ == '__main__':
-    print("🤖 Бот запущен...")
     init_database()
     init_feedback_table()
     bot.infinity_polling()

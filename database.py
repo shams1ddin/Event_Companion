@@ -1,4 +1,3 @@
-# database.py
 import sqlite3
 from config import DATABASE_NAME
 from datetime import datetime
@@ -99,7 +98,6 @@ def init_database():
             c.execute("ALTER TABLE agenda ADD COLUMN start_time TEXT")
         if 'end_time' not in agenda_columns:
             c.execute("ALTER TABLE agenda ADD COLUMN end_time TEXT")
-        # keep existing 'time' if present for backward compatibility
     except Exception:
         pass
 
@@ -108,7 +106,6 @@ def init_database():
     except Exception:
         pass
 
-    # Deduplicate participants and enforce uniqueness
     try:
         c.execute("DELETE FROM participants WHERE rowid NOT IN (SELECT MIN(rowid) FROM participants GROUP BY meeting_id, user_id)")
         c.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_participants_unique ON participants(meeting_id, user_id)")
@@ -118,7 +115,6 @@ def init_database():
     conn.commit()
     conn.close()
 
-# === USERS ===
 def get_user(user_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -166,7 +162,6 @@ def unset_admin(user_id):
     conn.commit()
     conn.close()
 
-# === MEETINGS ===
 def create_meeting(name, location, date, lat=None, lon=None):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -279,7 +274,6 @@ def update_meeting_location(meeting_id, location):
     conn.commit()
     conn.close()
 
-# === PARTICIPANTS ===
 def add_participant(meeting_id, user_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -321,7 +315,6 @@ def get_participant_user_ids(meeting_id):
     conn.close()
     return [row[0] for row in ids]
 
-# === PHOTOS ===
 def add_photo(meeting_id, file_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -337,7 +330,6 @@ def get_photos(meeting_id):
     conn.close()
     return [p[0] for p in photos]
 
-# === QUESTIONS ===
 def add_question(meeting_id, user_id, question):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -354,7 +346,6 @@ def get_questions(meeting_id):
     conn.close()
     return questions
 
-# === AGENDA (если захочешь потом добавить) ===
 def get_agenda(meeting_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -461,7 +452,6 @@ def get_all_users():
     conn.close()
     return users
 
-# === ADMIN: DELETE MEETING ===
 def delete_meeting(meeting_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -473,7 +463,6 @@ def delete_meeting(meeting_id):
     conn.commit()
     conn.close()
 
-# === FEEDBACK ===
 def init_feedback_table():
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
@@ -504,7 +493,6 @@ def get_feedback_for_meeting(meeting_id):
     conn.close()
     return rows
 
-# === ADMIN UTIL ===
 def clear_wifi(meeting_id):
     conn = sqlite3.connect(DATABASE_NAME)
     c = conn.cursor()
