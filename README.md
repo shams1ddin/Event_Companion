@@ -7,7 +7,8 @@ Telegram event companion bot with in‑bot admin controls and a Django web admin
 - Install dependencies:
 
   ```bash
-  pip install pyTelegramBotAPI django
+ pip install -r requirements.txt
+
   ```
 
 - Set your bot token in `config.py` (obtain from `@BotFather`).
