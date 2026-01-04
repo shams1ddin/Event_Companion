@@ -130,13 +130,35 @@ def meeting_callback(call):
     
     if meeting:
         is_following = is_participant(meeting_id, user_id)
-        text = get_text(
-            lang, 
-            'meeting_details',
-            name=meeting[1],
-            location=meeting[2] or 'N/A',
-            date=meeting[3] or 'N/A'
-        )
+        text = get_text(lang, 'meeting_details', name=meeting[1], location=meeting[2] or 'N/A', date=meeting[3] or 'N/A')
+        wifi_network = meeting[4] if len(meeting) > 4 else None
+        wifi_password = meeting[5] if len(meeting) > 5 else None
+        if wifi_network or wifi_password:
+            text += f"\n\n📶 WiFi\nSSID: {wifi_network or 'N/A'}\nPassword: {wifi_password or 'N/A'}"
+        participants = get_participants(meeting_id)
+        if participants:
+            text += f"\n\n👥 Participants ({len(participants)}):\n"
+            for p in participants[:5]:
+                name = p[1] or 'N/A'
+                phone = p[2] or ''
+                company = p[3] or ''
+                extra = " ".join([x for x in [phone, company] if x])
+                text += f"• {name}" + (f" — {extra}" if extra else "") + "\n"
+            if len(participants) > 5:
+                text += "..."
+        photos = get_photos(meeting_id)
+        if photos:
+            photo = photos[0]
+            try:
+                if isinstance(photo, str) and photo.startswith('file://'):
+                    path = photo[len('file://'):]
+                    with open(path, 'rb') as f:
+                        bot.send_photo(call.message.chat.id, f, caption=text, reply_markup=meeting_details_keyboard(meeting_id, lang, is_following=is_following))
+                else:
+                    bot.send_photo(call.message.chat.id, photo, caption=text, reply_markup=meeting_details_keyboard(meeting_id, lang, is_following=is_following))
+                return
+            except:
+                pass
         bot.edit_message_text(
             text,
             call.message.chat.id,
@@ -401,7 +423,12 @@ def photos_callback(call):
         # Отправляем фотографии
         for photo in photos:
             try:
-                bot.send_photo(call.message.chat.id, photo)
+                if isinstance(photo, str) and photo.startswith('file://'):
+                    path = photo[len('file://'):]
+                    with open(path, 'rb') as f:
+                        bot.send_photo(call.message.chat.id, f)
+                else:
+                    bot.send_photo(call.message.chat.id, photo)
             except:
                 pass
         bot.send_message(
@@ -765,7 +792,12 @@ def admin_photos_view_callback(call):
     if has_photos:
         for photo in photos:
             try:
-                bot.send_photo(call.message.chat.id, photo)
+                if isinstance(photo, str) and photo.startswith('file://'):
+                    path = photo[len('file://'):]
+                    with open(path, 'rb') as f:
+                        bot.send_photo(call.message.chat.id, f)
+                else:
+                    bot.send_photo(call.message.chat.id, photo)
             except:
                 pass
         bot.send_message(
@@ -800,7 +832,12 @@ def admin_pdf_view_callback(call):
     has_pdf = bool(file_id)
     if has_pdf:
         try:
-            bot.send_document(call.message.chat.id, file_id)
+            if isinstance(file_id, str) and file_id.startswith('file://'):
+                path = file_id[len('file://'):]
+                with open(path, 'rb') as f:
+                    bot.send_document(call.message.chat.id, f)
+            else:
+                bot.send_document(call.message.chat.id, file_id)
         except:
             pass
         bot.send_message(call.message.chat.id, get_text(lang, 'pdf_info'), reply_markup=admin_pdf_view_keyboard(meeting_id, lang, True))
