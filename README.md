@@ -1,4 +1,4 @@
-# Event Companion 1.5
+# Event_Companion
 
 Telegram event companion bot with in‑bot admin controls and a Django web admin. Supports multiple meetings, agenda, photos, geolocation, Wi‑Fi, PDF, participants, Q&A, and feedback. UI in three languages: English, Russian, Uzbek.
 
@@ -7,8 +7,7 @@ Telegram event companion bot with in‑bot admin controls and a Django web admin
 - Install dependencies:
 
   ```bash
- pip install -r requirements.txt
-
+  pip install -r requirements.txt
   ```
 
 - Set your bot token in `config.py` (obtain from `@BotFather`).
@@ -36,7 +35,7 @@ Telegram event companion bot with in‑bot admin controls and a Django web admin
   - `BOT_TOKEN` — Telegram bot token
   - `ADMIN_PASSWORD` — password for in‑bot admin panel
   - `ADMIN_IDS` — list of administrator user IDs
-  - `DATABASE_NAME` — SQLite file name (default `event_bot.db`)
+  - `DATABASE_NAME` — "event_bot.db"
 
 - `database.py` — SQLite access helpers:
   - Initializes tables and indexes (`init_database`).
