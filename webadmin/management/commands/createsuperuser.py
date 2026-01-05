@@ -3,8 +3,6 @@ from django.core.management.base import BaseCommand, CommandError
 
 
 class Command(BaseCommand):
-    help = "Create a superuser without email prompt (password is visible)."
-
     def add_arguments(self, parser):
         parser.add_argument('--username', dest='username')
         parser.add_argument('--password', dest='password')
@@ -18,7 +16,7 @@ class Command(BaseCommand):
 
         password = options.get('password')
         if password is None:
-            password = input('Password (visible): ')
+            password = input('Password: ')
             password2 = input('Password again: ')
             if password != password2:
                 raise CommandError('Passwords do not match.')

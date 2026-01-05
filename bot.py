@@ -29,12 +29,6 @@ def start_command(message):
             get_text(lang, 'welcome'),
             reply_markup=main_menu_keyboard(lang)
         )
-# @bot.message_handler(content_types=['photo'])
-# def get_id_of_photo(message):
-#     """Получение ID фотографии"""
-#     photo = message.photo[-1]
-#     file_id = photo.file_id
-#     bot.send_message(message.chat.id, f"Photo ID: {file_id}")
 
 @bot.message_handler(commands=['admin'])
 def admin_command(message):

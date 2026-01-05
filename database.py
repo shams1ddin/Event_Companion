@@ -1,6 +1,5 @@
 import sqlite3
 from config import DATABASE_NAME
-from datetime import datetime
 
 def init_database():
     conn = sqlite3.connect(DATABASE_NAME)

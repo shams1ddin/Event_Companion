@@ -7,9 +7,6 @@ from django.contrib.auth.models import Group, User
 import os
 import uuid
 
-import config
-import requests
-
 from .models import Meeting, ActiveMeeting, CompletedMeeting, Agenda, Photo, Question, Feedback, BotUser
 
 admin.site.site_header = "Event Companion Admin"
@@ -17,7 +14,6 @@ admin.site.site_title = "Event Companion Admin"
 admin.site.index_title = "Administration"
 admin.site.login_template = 'admin/custom_login.html'
 
-# Unregister default User and Group
 try:
     admin.site.unregister(Group)
 except Exception:
@@ -27,10 +23,6 @@ try:
     admin.site.unregister(User)
 except Exception:
     pass
-
-def _storage_chat_id():
-    chat_id = getattr(config, 'TELEGRAM_STORAGE_CHAT_ID', None)
-    return chat_id if chat_id not in (None, '', 0) else None
 
 def _ensure_dir(path):
     try:
